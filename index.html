@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IELTS Learning App - Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+        .container { max-width: 900px; margin: auto; background: #fff; border-radius: 10px; box-shadow: 0 4px 18px rgba(0,0,0,0.18); padding: 30px;}
+        .header { text-align: center; margin-bottom: 20px;}
+        .user-score { text-align: right; margin-bottom: 15px; font-size: 1.1em; color: #444;}
+        .exercise-list { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;}
+        .exercise-card { background: #f8f9ff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 20px; width: 250px; text-align: center;}
+        .card-title { font-weight: bold; font-size: 1.2em; margin-bottom: 10px;}
+        .card-desc { color: #666; font-size: 0.98em; margin-bottom: 15px;}
+        .btn { background: #667eea; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer;}
+        .btn:hover { background: #5a6fd8;}
+        #randomModal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.4); justify-content: center; align-items: center;}
+        .modal-content { background: #fff; padding: 30px; border-radius: 10px; text-align: center;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏠 IELTS Learning App</h1>
+            <p>Practice with bite-sized exercises. Perfect for fragmented time!</p>
+            <button class="btn" onclick="playRandomExercise()">🎲 Play a Random Exercise</button>
+        </div>
+        <div class="user-score" id="userScore">
+            Total Score: <span id="totalScore">0</span>
+        </div>
+        <div class="exercise-list" id="exerciseList">
+            <!-- Cards will be injected here -->
+        </div>
+    </div>
+
+    <!-- Random Exercise Modal -->
+    <div id="randomModal">
+        <div class="modal-content" id="randomModalContent">
+            <!-- Modal content will be injected here -->
+        </div>
+    </div>
+
+    <script src="score.js"></script>
+    <script src="home.js"></script>
+</body>
+</html>
