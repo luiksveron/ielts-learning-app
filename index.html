@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IELTS Lo-fi Study App</title>
+  <!-- Lo-fi/Chill fonts from Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f6f5f2;
+      --card: #d6d1c4;
+      --accent-blue: #b8c6db;
+      --accent-peach: #f2e9e1;
+      --primary: #8ca6db;
+      --secondary: #e8a87c;
+      --header: #6d6875;
+      --sand: #e1d7c6;
+      --font-main: 'Quicksand', 'Nunito', Arial, sans-serif;
+    }
+    body {
+      background: var(--bg);
+      font-family: var(--font-main);
+      margin: 0;
+      min-height: 100vh;
+      color: #444;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      width: 100%;
+      text-align: center;
+      padding: 2.5rem 1rem 1.2rem 1rem;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-peach));
+      border-bottom: 1px solid var(--card);
+      box-shadow: 0 2px 10px rgba(140, 166, 219, 0.08);
+    }
+    header h1 {
+      font-family: 'Quicksand', cursive, sans-serif;
+      color: var(--header);
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.02em;
+    }
+    header p {
+      font-size: 1.15rem;
+      color: #6d6875cc;
+      margin-bottom: 0;
+    }
+    #random-exercise-btn {
+      margin: 1.5rem 0 2rem 0;
+      background: var(--primary);
+      color: white;
+      border: none;
+      font-family: var(--font-main);
+      font-size: 1.15rem;
+      padding: 0.8rem 2rem;
+      border-radius: 24px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(140,166,219,0.08);
+      transition: background 0.2s;
+    }
+    #random-exercise-btn:hover {
+      background: var(--secondary);
+      color: #444;
+    }
+    .exercise-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      width: 100%;
+      max-width: 900px;
+      margin-bottom: 2rem;
+    }
+    .exercise-card {
+      background: var(--card);
+      border-radius: 18px;
+      box-shadow: 0 2px 16px rgba(109,104,117,0.10);
+      padding: 1.6rem 1.2rem 1.2rem 1.2rem;
+      min-width: 250px;
+      max-width: 320px;
+      flex: 1 0 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      transition: box-shadow 0.2s;
+      position: relative;
+    }
+    .exercise-card h3 {
+      margin-top: 0;
+      margin-bottom: 0.6rem;
+      color: var(--header);
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    .exercise-card p {
+      margin: 0 0 0.8rem 0;
+      color: #555;
+      font-size: 1rem;
+    }
+    .exercise-card .progress {
+      font-size: 0.98rem;
+      margin-bottom: 1rem;
+      color: #6d6875;
+      background: var(--sand);
+      border-radius: 12px;
+      padding: 0.2rem 0.7rem;
+      display: inline-block;
+    }
+    .exercise-card button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      font-family: var(--font-main);
+      font-size: 1rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 18px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(140,166,219,0.07);
+      margin-top: auto;
+      transition: background 0.2s;
+    }
+    .exercise-card button:hover {
+      background: var(--secondary);
+      color: #444;
+    }
+    #exercise-embed {
+      width: 100%;
+      max-width: 900px;
+      min-height: 480px;
+      background: var(--accent-peach);
+      border-radius: 18px;
+      box-shadow: 0 2px 20px rgba(109,104,117,0.09);
+      margin: 2rem 0;
+      padding: 1.8rem 1.2rem;
+      display: none;
+    }
+    #close-exercise-btn {
+      background: var(--secondary);
+      color: #444;
+      border: none;
+      font-family: var(--font-main);
+      font-size: 1rem;
+      padding: 0.45rem 1rem;
+      border-radius: 12px;
+      cursor: pointer;
+      float: right;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 8px rgba(232,168,124,0.09);
+      transition: background 0.2s;
+    }
+    #close-exercise-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+    footer {
+      width: 100%;
+      text-align: center;
+      padding: 1.2rem 0 2rem 0;
+      color: #8ca6db;
+      font-size: 1.1rem;
+      letter-spacing: 0.03em;
+      background: linear-gradient(90deg, var(--accent-peach), var(--accent-blue));
+      border-top: 1px solid var(--card);
+      margin-top: auto;
+      box-shadow: 0 -2px 10px rgba(140, 166, 219, 0.05);
+    }
+    @media (max-width: 700px) {
+      .exercise-list {
+        flex-direction: column;
+        gap: 1.2rem;
+        max-width: 99vw;
+      }
+      .exercise-card {
+        max-width: 98vw;
+        min-width: 0;
+      }
+      #exercise-embed {
+        max-width: 99vw;
+        padding: 1rem 0.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>IELTS Lo-fi Study App ☕</h1>
+    <p>Welcome! Take a breath, choose an exercise, and study at your own pace.<br>Your progress is saved on your device.</p>
+  </header>
+  <button id="random-exercise-btn">🎲 Play a Random Exercise</button>
+  <div class="exercise-list" id="exercise-list">
+    <!-- Exercise cards will be rendered here -->
+  </div>
+  <div id="exercise-embed">
+    <!-- Embedded exercise will load here -->
+  </div>
+  <footer>
+    Tip: Study a little every day for best results 🌱
+  </footer>
+  <script>
+    // List of exercises (easy to add more!)
+    const exercises = [
+      {
+        id: 'vocab',
+        title: 'Vocabulary: Addition, Equation & Conclusion',
+        desc: 'Practice IELTS linking words with a drag-and-drop exercise.',
+        file: 'ielts_vocabulary_exercise.html',
+        maxScore: 24
+      },
+      {
+        id: 'paraphrase',
+        title: 'Writing Task 2: Paraphrasing Practice',
+        desc: 'Improve your IELTS writing by paraphrasing real questions. Get instant feedback and tips!',
+        file: 'ielts_writing_paraphrase_practice.html',
+        maxScore: 9 // For now, max band score
+      }
+      // Add more exercises here!
+    ];
+
+    // Progress tracking (localStorage, per user/device)
+    function getProgress(id) {
+      const raw = localStorage.getItem('ielts_progress_' + id);
+      if (!raw) return { completed: false, bestScore: 0 };
+      try {
+        const obj = JSON.parse(raw);
+        return obj;
+      } catch {
+        return { completed: false, bestScore: 0 };
+      }
+    }
+    function setProgress(id, progress) {
+      localStorage.setItem('ielts_progress_' + id, JSON.stringify(progress));
+    }
+
+    // Render exercise cards
+    function renderExercises() {
+      const list = document.getElementById('exercise-list');
+      list.innerHTML = '';
+      exercises.forEach(ex => {
+        const progress = getProgress(ex.id);
+        const card = document.createElement('div');
+        card.className = 'exercise-card';
+        card.innerHTML = `
+          <h3>${ex.title}</h3>
+          <p>${ex.desc}</p>
+          <div class="progress">
+            Best Score: <span id="${ex.id}-score">${progress.bestScore}</span> / ${ex.maxScore}
+            ${progress.completed ? '✅' : ''}
+          </div>
+          <button onclick="startExercise('${ex.id}')">Play</button>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    // Start/exercise embed logic
+    function startExercise(id) {
+      const ex = exercises.find(e => e.id === id);
+      if (!ex) return;
+      const embed = document.getElementById('exercise-embed');
+      embed.style.display = 'block';
+      embed.innerHTML = `
+        <button id="close-exercise-btn" onclick="closeExercise()">✖ Close</button>
+        <iframe id="exercise-iframe" src="${ex.file}" style="width:100%;height:600px;border:none;border-radius:12px;background:var(--accent-peach);box-shadow:0 2px 12px rgba(140,166,219,0.06);" allow="clipboard-write"></iframe>
+      `;
+      // Listen for progress updates from exercise
+      window.addEventListener('message', progressListener);
+    }
+
+    function closeExercise() {
+      const embed = document.getElementById('exercise-embed');
+      embed.style.display = 'none';
+      embed.innerHTML = '';
+      window.removeEventListener('message', progressListener);
+    }
+
+    // Allow exercises to postMessage progress to homepage
+    function progressListener(e) {
+      if (!e.data || !e.data.ielts_progress) return;
+      // e.data = { ielts_progress: {id, completed, bestScore} }
+      const { id, completed, bestScore } = e.data.ielts_progress;
+      setProgress(id, { completed, bestScore });
+      renderExercises();
+    }
+
+    // Random exercise button
+    document.getElementById('random-exercise-btn').onclick = function() {
+      const random = exercises[Math.floor(Math.random() * exercises.length)];
+      startExercise(random.id);
+    };
+
+    // Initial render
+    renderExercises();
+  </script>
+  <!--
+    Instructions for future exercise integration:
+      - Add new exercise objects to the exercises array (id, title, desc, file, maxScore)
+      - Each exercise HTML should send progress via window.parent.postMessage({ielts_progress: {id, completed, bestScore}}, "*")
+  -->
+</body>
+</html>
