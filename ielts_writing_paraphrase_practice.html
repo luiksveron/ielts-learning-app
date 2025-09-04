@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>IELTS Writing Paraphrasing Daily Practice</title>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #f0f4f8;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+    }
+    .container {
+        background-color: #fff;
+        max-width: 700px;
+        width: 100%;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        padding: 30px;
+    }
+    h1 {
+        text-align: center;
+        color: #2a4365;
+        margin-bottom: 10px;
+    }
+    .question {
+        font-size: 1.2em;
+        color: #2d3748;
+        margin-bottom: 15px;
+        background: #e2e8f0;
+        padding: 15px;
+        border-radius: 8px;
+    }
+    textarea {
+        width: 100%;
+        min-height: 120px;
+        font-size: 1em;
+        border-radius: 8px;
+        border: 1px solid #cbd5e0;
+        padding: 12px;
+        margin-bottom: 20px;
+        resize: vertical;
+    }
+    button {
+        background-color: #3182ce;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 1em;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-right: 10px;
+    }
+    button:hover {
+        background-color: #2c5282;
+    }
+    .output {
+        background: #edf2f7;
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 15px;
+        color: #1a202c;
+    }
+    .label {
+        font-weight: 600;
+        margin-top: 15px;
+        margin-bottom: 8px;
+        color: #4a5568;
+    }
+    .band-score {
+        font-size: 1.3em;
+        font-weight: 700;
+        color: #2f855a;
+        margin-top: 10px;
+        text-align: center;
+    }
+    .nav {
+        margin-top: 20px;
+        text-align: center;
+    }
+    .nav button {
+        margin: 5px;
+        background-color: #718096;
+    }
+    .nav button.active {
+        background-color: #3182ce;
+    }
+    .advice {
+        margin-top: 15px;
+        background: #feebc8;
+        border-left: 5px solid #dd6b20;
+        padding: 12px;
+        color: #744210;
+        border-radius: 5px;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>IELTS Writing Task 2<br>Paraphrasing Daily Practice</h1>
+        <div id="question-container" class="question"></div>
+        <textarea id="user-input" placeholder="Type your paraphrase here..."></textarea>
+        <div style="text-align: center;">
+            <button id="submit-btn">Submit</button>
+            <button id="next-btn" disabled>Next Question</button>
+        </div>
+        <div id="results" class="output" style="display:none;">
+            <div class="label">Your Analysis:</div>
+            <div id="analysis"></div>
+            <div class="label">Estimated Band Score:</div>
+            <div id="band-score" class="band-score"></div>
+            <div class="label">Band 9 Model Paraphrase:</div>
+            <div id="model-answer"></div>
+            <div class="label">Advice for Band 9:</div>
+            <div id="advice" class="advice"></div>
+        </div>
+        <div class="nav" id="nav-buttons"></div>
+    </div>
+<script>
+const questions = [
+    "Some people think that university education should be free for all students. To what extent do you agree or disagree?",
+    "Many believe that technology is making the world a better place. Do you agree or disagree?",
+    "In some countries, children are required to learn a foreign language at school. Discuss the advantages and disadvantages.",
+    "The government should invest more money in public transportation instead of building new roads. To what extent do you agree or disagree?",
+    "Some people say that climate change is the biggest challenge facing the world today. What is your opinion?"
+];
+
+const band9Models = [
+    `It is contended by some that access to university education should be offered free of charge to every individual. This essay will critically examine the extent of my agreement with this statement.`,
+    `There is a common belief that technological advancements are beneficial to the world. This essay will assess the validity of this perspective.`,
+    `In various countries, it has become mandatory for students to acquire a foreign language during their schooling. This essay evaluates the pros and cons of such a policy.`,
+    `It is proposed that increasing expenditure on public transport infrastructure should take priority over constructing new roads. This essay will discuss the degree to which I concur with this viewpoint.`,
+    `Some argue that climate change constitutes the most significant challenge confronting the contemporary world. I will present my perspective on this issue.`
+];
+
+const band9Advice = [
+    `Use precise and advanced vocabulary to rephrase key concepts, maintain the original meaning without repetition, and vary your sentence structures including complex and compound sentences.`,
+    `Employ a range of sophisticated synonyms and maintain natural flow while accurately capturing the author's position. Avoid oversimplification or omission of crucial details.`,
+    `Balance your use of formal vocabulary and complex sentences with clarity. Ensure the paraphrase includes all important elements and uses accurate terminology.`,
+    `Use clear, formal academic language and restructure the sentence to avoid plagiarism, while keeping the meaning intact. Include linking phrases where appropriate.`,
+    `Adopt careful lexical choices related to environmental issues and state your opinion succinctly in formal style. Vary sentence length and complexity.`
+];
+
+let currentQuestionIndex = 0;
+
+const questionContainer = document.getElementById('question-container');
+const userInput = document.getElementById('user-input');
+const submitBtn = document.getElementById('submit-btn');
+const nextBtn = document.getElementById('next-btn');
+const results = document.getElementById('results');
+const analysisOutput = document.getElementById('analysis');
+const bandScoreOutput = document.getElementById('band-score');
+const modelAnswerOutput = document.getElementById('model-answer');
+const adviceOutput = document.getElementById('advice');
+const navButtons = document.getElementById('nav-buttons');
+
+// Display the question
+function displayQuestion(index) {
+    currentQuestionIndex = index;
+    questionContainer.textContent = questions[index];
+    userInput.value = '';
+    results.style.display = 'none';
+    nextBtn.disabled = true;
+    submitBtn.disabled = false;
+    userInput.focus();
+    highlightNavButton(index);
+}
+
+// Navigation buttons
+function createNavButtons() {
+    questions.forEach((_, i) => {
+        const btn = document.createElement('button');
+        btn.textContent = `Q${i + 1}`;
+        btn.addEventListener('click', () => displayQuestion(i));
+        navButtons.appendChild(btn);
+    });
+}
+
+function highlightNavButton(index) {
+    const buttons = navButtons.querySelectorAll('button');
+    buttons.forEach((btn, i) => {
+        btn.classList.toggle('active', i === index);
+    });
+}
+
+// Simple grammar and vocabulary analysis function (placeholder, to be refined)
+function analyzeInput(text) {
+    if (!text || text.trim().length < 10) {
+        return {
+            grammar: 'Your paraphrase is too short for a meaningful analysis.',
+            vocab: 'Try to use a wider range of advanced vocabulary.',
+            band: 4.0
+        };
+    }
+
+    // Basic checks for complex sentence connectors
+    let grammarScore = 7.0;
+    let vocabScore = 7.0;
+    const complexConnectors = ['although', 'despite', 'however', 'moreover', 'therefore', 'thus', 'consequently'];
+    const usedConnectors = complexConnectors.filter(connector => text.toLowerCase().includes(connector));
+    if (usedConnectors.length < 2) grammarScore -= 1;
+
+    // Vocabulary complexity by word length and diversity
+    const words = text.split(/\s+/);
+    const uniqueWords = new Set(words.map(w => w.toLowerCase()));
+    if (uniqueWords.size < 15) vocabScore -= 1;
+    if (words.some(word => word.length > 12)) vocabScore += 0.5;
+
+    const estimatedBand = Math.min(9.0, Math.max(4.0, (grammarScore + vocabScore) / 2));
+
+    return {
+        grammar: `Grammar complexity rating: ${grammarScore.toFixed(1)} out of 9`,
+        vocab: `Vocabulary sophistication rating: ${vocabScore.toFixed(1)} out of 9`,
+        band: estimatedBand.toFixed(1)
+    };
+}
+
+submitBtn.addEventListener('click', () => {
+    const paraphrase = userInput.value.trim();
+    if (!paraphrase) {
+        alert('Please enter your paraphrase before submitting.');
+        return;
+    }
+
+    const analysis = analyzeInput(paraphrase);
+
+    analysisOutput.textContent = `${analysis.grammar}
+${analysis.vocab}`;
+    bandScoreOutput.textContent = analysis.band;
+    modelAnswerOutput.textContent = band9Models[currentQuestionIndex];
+    adviceOutput.textContent = band9Advice[currentQuestionIndex];
+    results.style.display = 'block';
+    submitBtn.disabled = true;
+    nextBtn.disabled = false;
+});
+
+nextBtn.addEventListener('click', () => {
+    const nextIndex = (currentQuestionIndex + 1) % questions.length;
+    displayQuestion(nextIndex);
+});
+
+// Initialize
+createNavButtons();
+displayQuestion(0);
+</script>
+</body>
+</html>
