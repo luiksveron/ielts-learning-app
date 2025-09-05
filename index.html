@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>IELTS Lo-fi Study App</title>
-  <!-- Lo-fi/Chill fonts from Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     :root {
       --bg: #f6f5f2;
@@ -35,10 +34,10 @@
       background: linear-gradient(90deg, var(--accent-blue), var(--accent-peach));
       border-bottom: 1px solid var(--card);
       box-shadow: 0 2px 10px rgba(140, 166, 219, 0.08);
+      color: var(--header);
     }
     header h1 {
       font-family: 'Quicksand', cursive, sans-serif;
-      color: var(--header);
       font-size: 2.2rem;
       margin-bottom: 0.5rem;
       letter-spacing: 0.02em;
@@ -58,12 +57,12 @@
       padding: 0.8rem 2rem;
       border-radius: 24px;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(140,166,219,0.08);
+      box-shadow: 0 2px 8px rgba(140, 166, 219, 0.08);
       transition: background 0.2s;
     }
     #random-exercise-btn:hover {
       background: var(--secondary);
-      color: #444;
+      color: var(--header);
     }
     .exercise-list {
       display: flex;
@@ -77,7 +76,7 @@
     .exercise-card {
       background: var(--card);
       border-radius: 18px;
-      box-shadow: 0 2px 16px rgba(109,104,117,0.10);
+      box-shadow: 0 2px 16px rgba(109, 104, 117, 0.10);
       padding: 1.6rem 1.2rem 1.2rem 1.2rem;
       min-width: 250px;
       max-width: 320px;
@@ -87,18 +86,16 @@
       align-items: flex-start;
       transition: box-shadow 0.2s;
       position: relative;
+      color: var(--header);
     }
     .exercise-card h3 {
       margin-top: 0;
       margin-bottom: 0.6rem;
-      color: var(--header);
       font-size: 1.2rem;
       font-weight: 700;
     }
     .exercise-card p {
       margin: 0 0 0.8rem 0;
-      color: #555;
-      font-size: 1rem;
     }
     .exercise-card .progress {
       font-size: 0.98rem;
@@ -118,13 +115,13 @@
       padding: 0.6rem 1.2rem;
       border-radius: 18px;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(140,166,219,0.07);
+      box-shadow: 0 2px 8px rgba(140, 166, 219, 0.07);
       margin-top: auto;
       transition: background 0.2s;
     }
     .exercise-card button:hover {
       background: var(--secondary);
-      color: #444;
+      color: var(--header);
     }
     #exercise-embed {
       width: 100%;
@@ -132,14 +129,14 @@
       min-height: 480px;
       background: var(--accent-peach);
       border-radius: 18px;
-      box-shadow: 0 2px 20px rgba(109,104,117,0.09);
+      box-shadow: 0 2px 20px rgba(109, 104, 117, 0.09);
       margin: 2rem 0;
       padding: 1.8rem 1.2rem;
       display: none;
     }
     #close-exercise-btn {
       background: var(--secondary);
-      color: #444;
+      color: var(--header);
       border: none;
       font-family: var(--font-main);
       font-size: 1rem;
@@ -159,7 +156,7 @@
       width: 100%;
       text-align: center;
       padding: 1.2rem 0 2rem 0;
-      color: #8ca6db;
+      color: var(--primary);
       font-size: 1.1rem;
       letter-spacing: 0.03em;
       background: linear-gradient(90deg, var(--accent-peach), var(--accent-blue));
@@ -187,54 +184,46 @@
 <body>
   <header>
     <h1>IELTS Lo-fi Study App ☕</h1>
-    <p>Welcome! Take a breath, choose an exercise, and study at your own pace.<br>Your progress is saved on your device.</p>
+    <p>Welcome! Take a breath, choose an exercise, and study at your own pace.<br />Your progress is saved on your device.</p>
   </header>
   <button id="random-exercise-btn">🎲 Play a Random Exercise</button>
-  <div class="exercise-list" id="exercise-list">
-    <!-- Exercise cards will be rendered here -->
-  </div>
-  <div id="exercise-embed">
-    <!-- Embedded exercise will load here -->
-  </div>
+  <div class="exercise-list" id="exercise-list"></div>
+  <div id="exercise-embed"></div>
   <footer>
     Tip: Study a little every day for best results 🌱
   </footer>
   <script>
-    // List of exercises (easy to add more!)
     const exercises = [
       {
         id: 'vocab',
         title: 'Vocabulary: Addition, Equation & Conclusion',
         desc: 'Practice IELTS linking words with a drag-and-drop exercise.',
-        file: 'ielts_vocabulary_exercise.html',
+        file: 'ielts-vocab-exercise-fixed.html',
         maxScore: 24
       },
       {
         id: 'paraphrase',
         title: 'Writing Task 2: Paraphrasing Practice',
         desc: 'Improve your IELTS writing by paraphrasing real questions. Get instant feedback and tips!',
-        file: 'ielts_writing_paraphrase_practice.html',
-        maxScore: 9 // For now, max band score
+        file: 'ielts-writing-paraphrase-practice-updated.html',
+        maxScore: 9
       }
-      // Add more exercises here!
     ];
 
-    // Progress tracking (localStorage, per user/device)
     function getProgress(id) {
       const raw = localStorage.getItem('ielts_progress_' + id);
       if (!raw) return { completed: false, bestScore: 0 };
       try {
-        const obj = JSON.parse(raw);
-        return obj;
+        return JSON.parse(raw);
       } catch {
         return { completed: false, bestScore: 0 };
       }
     }
+
     function setProgress(id, progress) {
       localStorage.setItem('ielts_progress_' + id, JSON.stringify(progress));
     }
 
-    // Render exercise cards
     function renderExercises() {
       const list = document.getElementById('exercise-list');
       list.innerHTML = '';
@@ -246,8 +235,7 @@
           <h3>${ex.title}</h3>
           <p>${ex.desc}</p>
           <div class="progress">
-            Best Score: <span id="${ex.id}-score">${progress.bestScore}</span> / ${ex.maxScore}
-            ${progress.completed ? '✅' : ''}
+            Best Score: <span id="${ex.id}-score">${progress.bestScore}</span> / ${ex.maxScore} ${progress.completed ? '✅' : ''}
           </div>
           <button onclick="startExercise('${ex.id}')">Play</button>
         `;
@@ -255,7 +243,6 @@
       });
     }
 
-    // Start/exercise embed logic
     function startExercise(id) {
       const ex = exercises.find(e => e.id === id);
       if (!ex) return;
@@ -265,7 +252,6 @@
         <button id="close-exercise-btn" onclick="closeExercise()">✖ Close</button>
         <iframe id="exercise-iframe" src="${ex.file}" style="width:100%;height:600px;border:none;border-radius:12px;background:var(--accent-peach);box-shadow:0 2px 12px rgba(140,166,219,0.06);" allow="clipboard-write"></iframe>
       `;
-      // Listen for progress updates from exercise
       window.addEventListener('message', progressListener);
     }
 
@@ -276,28 +262,20 @@
       window.removeEventListener('message', progressListener);
     }
 
-    // Allow exercises to postMessage progress to homepage
     function progressListener(e) {
       if (!e.data || !e.data.ielts_progress) return;
-      // e.data = { ielts_progress: {id, completed, bestScore} }
-      const { id, completed, bestScore } = e.data.ielts_progress;
-      setProgress(id, { completed, bestScore });
+      const { id, completed, bestScore, totalXP } = e.data.ielts_progress;
+      setProgress(id, { completed, bestScore, totalXP });
       renderExercises();
+      console.log(`Progress updated for ${id}: Best Score - ${bestScore}, Total XP - ${totalXP}`);
     }
 
-    // Random exercise button
-    document.getElementById('random-exercise-btn').onclick = function() {
+    document.getElementById('random-exercise-btn').onclick = function () {
       const random = exercises[Math.floor(Math.random() * exercises.length)];
       startExercise(random.id);
     };
 
-    // Initial render
     renderExercises();
   </script>
-  <!--
-    Instructions for future exercise integration:
-      - Add new exercise objects to the exercises array (id, title, desc, file, maxScore)
-      - Each exercise HTML should send progress via window.parent.postMessage({ielts_progress: {id, completed, bestScore}}, "*")
-  -->
 </body>
 </html>
