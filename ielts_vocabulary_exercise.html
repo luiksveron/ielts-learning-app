@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>IELTS Vocabulary Exercise - Addition, Equation & Conclusion (with XP and Progress)</title>
+  <title>IELTS Vocabulary Exercise - Addition, Equation & Conclusion</title>
   <style>
     :root {
       --bg: #f6f5f2;
@@ -58,7 +58,7 @@
       color: var(--header);
       line-height: 1.5;
     }
-    .score-display, #xp-display {
+    .score-display {
       text-align: center;
       font-size: 1.5rem;
       color: var(--primary);
@@ -211,7 +211,26 @@
       transform: none;
       box-shadow: none;
     }
-  </style>
+  
+    .feedback-area {
+      margin: 20px 0;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .feedback-area.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .feedback-area.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -219,7 +238,8 @@
     <h1>🎯 IELTS Vocabulary Exercise</h1>
     <p>Day 1: Addition, Equation & Conclusion</p>
     <div class="score-display" id="score-display">Score: 0 / 24</div>
-    <div id="xp-display">Total XP: 0</div>
+    <div id="feedback" class="feedback-area" style="display: none;"></div>
+    
   </div>
 
   <div class="hints">
@@ -279,7 +299,7 @@
     populateWordBank();
     setupDragAndDrop();
     loadPreviousProgress();
-    updateXPDisplay(getTotalXP());
+    
     updateScoreDisplay();
     updateProgressBar();
   }
@@ -386,19 +406,19 @@
     progressText.textContent = `Words Left in Word Bank: ${wordsLeft}`;
   }
 
-  function calculateXP(score, maxScore) {
-    const baseXP = 100;
-    const alpha = 1.5;
-    return Math.round(baseXP * Math.pow(score / maxScore, alpha));
-  }
+  
 
   function checkAnswers() {
     score = 0;
+    let feedback = '';
+    let allCorrect = true;
 
+    // Clear previous styling
     document.querySelectorAll('.word-item').forEach(word => {
       word.classList.remove('correct', 'incorrect');
     });
 
+    // Check answers and calculate score
     Object.keys(correctAnswers).forEach(category => {
       const categoryElement = document.querySelector(`.category[data-category="${category}"] .words-container`);
       const wordsInCategory = Array.from(categoryElement.children);
@@ -411,11 +431,31 @@
           wordElement.classList.add('correct');
         } else {
           wordElement.classList.add('incorrect');
+          allCorrect = false;
         }
       });
     });
 
-    updateScoreAndProgress();
+    // Update score display
+    updateScoreDisplay();
+
+    // Provide feedback
+    const totalWords = Object.values(correctAnswers).flat().length;
+    const placedWords = document.querySelectorAll('.word-item').length;
+
+    if (placedWords === 0) {
+        feedback = 'Please place some words in the categories first!';
+        showFeedback(feedback, 'error');
+    } else if (allCorrect && score === totalWords) {
+        feedback = `🎉 Excellent! Perfect score ${score}/${totalWords}! You've mastered IELTS linking words for Addition, Equation, and Conclusion. This vocabulary will significantly boost your Writing Task 2 coherence and cohesion scores!`;
+        showFeedback(feedback, 'success');
+    } else if (score >= totalWords * 0.8) {
+        feedback = `👍 Great work! Score: ${score}/${totalWords}. You have a strong understanding of IELTS linking vocabulary. Review the incorrect ones and you'll be ready for Band 7.5+!`;
+        showFeedback(feedback, 'success');
+    } else {
+        feedback = `📚 Keep practicing! Score: ${score}/${totalWords}. Focus on understanding the function of each linking word. Remember: Addition words add information, Equation words show similarity, Conclusion words summarize or conclude.`;
+        showFeedback(feedback, 'error');
+    }
   }
 
   function updateScoreDisplay() {
@@ -423,45 +463,13 @@
     scoreDisplay.textContent = `Score: ${score} / ${maxScore}`;
   }
 
-  function getTotalXP() {
-    try {
-      const saved = localStorage.getItem('ielts_total_xp');
-      return saved ? parseInt(saved, 10) : 0;
-    } catch {
-      return 0;
-    }
-  }
+  
 
-  function updateXP(newXP) {
-    const savedXP = getTotalXP();
-    const totalXP = savedXP + newXP;
-    localStorage.setItem('ielts_total_xp', totalXP);
-    updateXPDisplay(totalXP);
-    sendProgressToParentWithXP(totalXP);
-  }
+  
 
-  function updateXPDisplay(totalXP) {
-    const xpDisplay = document.getElementById('xp-display');
-    if (xpDisplay) {
-      xpDisplay.textContent = `Total XP: ${totalXP}`;
-    }
-  }
+  
 
-  function sendProgressToParentWithXP(totalXP) {
-    const progress = {
-      ielts_progress: {
-        id: 'vocab',
-        completed: score === maxScore,
-        bestScore: score,
-        totalXP: totalXP
-      }
-    };
-
-    if (window.parent && window.parent !== window) {
-      window.parent.postMessage(progress, '*');
-      console.log('Progress sent to parent with XP:', progress);
-    }
-  }
+  
 
   function saveProgressLocally() {
     try {
@@ -490,17 +498,12 @@
     }
   }
 
-  function updateScoreAndProgress() {
-    updateScoreDisplay();
-    const xpGained = calculateXP(score, maxScore);
-    updateXP(xpGained);
-    saveProgressLocally();
-  }
+  
 
   function resetExercise() {
     score = 0;
     updateScoreDisplay();
-    updateXPDisplay(getTotalXP());
+    
 
     document.querySelectorAll('.word-item').forEach(word => {
       word.classList.remove('correct', 'incorrect');
@@ -518,6 +521,17 @@
     document.getElementById('check-answers-btn').addEventListener('click', checkAnswers);
     document.getElementById('reset-btn').addEventListener('click', resetExercise);
   });
+
+function showFeedback(message, type) {
+            const feedbackElement = document.getElementById('feedback');
+            feedbackElement.textContent = message;
+            feedbackElement.className = `feedback show ${type}`;
+
+            // Hide feedback after 10 seconds
+            setTimeout(() => {
+                feedbackElement.className = 'feedback hide';
+            }, 10000);
+        }
 </script>
 </body>
 </html>
