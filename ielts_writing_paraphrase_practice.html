@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,194 +6,330 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>IELTS Writing Paraphrasing Daily Practice</title>
 <style>
-  :root {
-    --bg: #f6f5f2;
-    --card: #d6d1c4;
-    --accent-blue: #b8c6db;
-    --accent-peach: #f2e9e1;
-    --primary: #8ca6db;
-    --secondary: #e8a87c;
-    --header: #6d6875;
-    --sand: #e1d7c6;
-    --font-main: 'Quicksand', 'Nunito', Arial, sans-serif;
-  }
-  body {
-    font-family: var(--font-main);
-    background: var(--bg);
-    margin: 0;
-    padding: 20px;
-    min-height: 100vh;
-    color: #444;
-    display: flex;
-    justify-content: center;
-  }
-  .container {
-    background: var(--card);
-    max-width: 700px;
-    width: 100%;
-    border-radius: 18px;
-    box-shadow: 0 2px 20px rgba(109, 104, 117, 0.09);
-    padding: 30px;
-  }
-  h1 {
-    text-align: center;
-    color: var(--header);
-    margin-bottom: 15px;
-    font-size: 2rem;
-  }
-  .question {
-    font-size: 1.2rem;
-    color: var(--header);
-    background: var(--sand);
-    padding: 15px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-  }
-  textarea {
-    width: 100%;
-    min-height: 140px;
-    border-radius: 12px;
-    border: 2px solid var(--primary);
-    padding: 12px;
-    font-size: 1.1rem;
-    resize: vertical;
-    font-family: var(--font-main);
-    margin-bottom: 20px;
-    color: #444;
-  }
-  button {
-    background-color: var(--primary);
-    color: white;
-    border: none;
-    padding: 14px 25px;
-    border-radius: 24px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
-    width: 100%;
-    box-shadow: 0 4px 12px rgba(140,166,219,0.18);
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  button:hover {
-    background-color: var(--secondary);
-    color: var(--header);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(232,168,124,0.3);
-  }
-  .output {
-    background: var(--sand);
-    border-radius: 12px;
-    padding: 20px;
-    margin-top: 20px;
-    color: var(--header);
-    font-weight: 600;
-  }
-  .band-score {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: var(--primary);
-    margin-top: 15px;
-    text-align: center;
-  }
-</style>
+    :root {
+      --bg: #f6f5f2;
+      --card: #d6d1c4;
+      --accent-blue: #b8c6db;
+      --accent-peach: #f2e9e1;
+      --primary: #8ca6db;
+      --secondary: #e8a87c;
+      --header: #6d6875;
+      --sand: #e1d7c6;
+      --font-main: 'Quicksand', 'Nunito', Arial, sans-serif;
+    }
+    body {
+      background: var(--bg);
+      font-family: var(--font-main);
+      margin: 0;
+      min-height: 100vh;
+      color: #444;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      width: 100%;
+      text-align: center;
+      padding: 2.5rem 1rem 1.2rem 1rem;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-peach));
+      border-bottom: 1px solid var(--card);
+      box-shadow: 0 2px 10px rgba(140, 166, 219, 0.08);
+    }
+    header h1 {
+      font-family: 'Quicksand', cursive, sans-serif;
+      color: var(--header);
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.02em;
+    }
+    header p {
+      font-size: 1.15rem;
+      color: #6d6875cc;
+      margin-bottom: 0;
+    }
+    #random-exercise-btn {
+      margin: 1.5rem 0 2rem 0;
+      background: var(--primary);
+      color: white;
+      border: none;
+      font-family: var(--font-main);
+      font-size: 1.15rem;
+      padding: 0.8rem 2rem;
+      border-radius: 24px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(140,166,219,0.08);
+      transition: background 0.2s;
+    }
+    #random-exercise-btn:hover {
+      background: var(--secondary);
+      color: #444;
+    }
+    .exercise-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      width: 100%;
+      max-width: 900px;
+      margin-bottom: 2rem;
+    }
+    .exercise-card {
+      background: var(--card);
+      border-radius: 18px;
+      box-shadow: 0 2px 16px rgba(109,104,117,0.10);
+      padding: 1.6rem 1.2rem 1.2rem 1.2rem;
+      min-width: 250px;
+      max-width: 320px;
+      flex: 1 0 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      transition: box-shadow 0.2s;
+      position: relative;
+    }
+    .exercise-card h3 {
+      margin-top: 0;
+      margin-bottom: 0.6rem;
+      color: var(--header);
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    .exercise-card p {
+      margin: 0 0 0.8rem 0;
+      color: #555;
+      font-size: 1rem;
+    }
+    .exercise-card .progress {
+      font-size: 0.98rem;
+      margin-bottom: 1rem;
+      color: #6d6875;
+      background: var(--sand);
+      border-radius: 12px;
+      padding: 0.2rem 0.7rem;
+      display: inline-block;
+    }
+    .exercise-card button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      font-family: var(--font-main);
+      font-size: 1rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 18px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(140,166,219,0.07);
+      margin-top: auto;
+      transition: background 0.2s;
+    }
+    .exercise-card button:hover {
+      background: var(--secondary);
+      color: #444;
+    }
+    #exercise-embed {
+      width: 100%;
+      max-width: 900px;
+      min-height: 480px;
+      background: var(--accent-peach);
+      border-radius: 18px;
+      box-shadow: 0 2px 20px rgba(109,104,117,0.09);
+      margin: 2rem 0;
+      padding: 1.8rem 1.2rem;
+      display: none;
+    }
+    #close-exercise-btn {
+      background: var(--secondary);
+      color: #444;
+      border: none;
+      font-family: var(--font-main);
+      font-size: 1rem;
+      padding: 0.45rem 1rem;
+      border-radius: 12px;
+      cursor: pointer;
+      float: right;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 8px rgba(232,168,124,0.09);
+      transition: background 0.2s;
+    }
+    #close-exercise-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+    footer {
+      width: 100%;
+      text-align: center;
+      padding: 1.2rem 0 2rem 0;
+      color: #8ca6db;
+      font-size: 1.1rem;
+      letter-spacing: 0.03em;
+      background: linear-gradient(90deg, var(--accent-peach), var(--accent-blue));
+      border-top: 1px solid var(--card);
+      margin-top: auto;
+      box-shadow: 0 -2px 10px rgba(140, 166, 219, 0.05);
+    }
+    @media (max-width: 700px) {
+      .exercise-list {
+        flex-direction: column;
+        gap: 1.2rem;
+        max-width: 99vw;
+      }
+      .exercise-card {
+        max-width: 98vw;
+        min-width: 0;
+      }
+      #exercise-embed {
+        max-width: 99vw;
+        padding: 1rem 0.2rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Writing Task 2: Paraphrasing Practice</h1>
-    <div class="question" id="original-question">
-      Some people think that university education should be free for all students. To what extent do you agree or disagree?
+    <div class="container">
+        <h1>IELTS Writing Task 2<br>Paraphrasing Daily Practice</h1>
+        <div id="question-container" class="question"></div>
+        <textarea id="user-input" placeholder="Type your paraphrase here..."></textarea>
+        <div style="text-align: center;">
+            <button id="submit-btn">Submit</button>
+            <button id="next-btn" disabled>Next Question</button>
+        </div>
+        <div id="results" class="output" style="display:none;">
+            <div class="label">Your Analysis:</div>
+            <div id="analysis"></div>
+            <div class="label">Estimated Band Score:</div>
+            <div id="band-score" class="band-score"></div>
+            <div class="label">Band 9 Model Paraphrase:</div>
+            <div id="model-answer"></div>
+            <div class="label">Advice for Band 9:</div>
+            <div id="advice" class="advice"></div>
+        </div>
+        <div class="nav" id="nav-buttons"></div>
     </div>
-    <textarea id="user-input" placeholder="Type your paraphrase here..."></textarea>
-    <button id="analyze-btn">Analyze Paraphrase</button>
+<script>
+const questions = [
+    "Some people think that university education should be free for all students. To what extent do you agree or disagree?",
+    "Many believe that technology is making the world a better place. Do you agree or disagree?",
+    "In some countries, children are required to learn a foreign language at school. Discuss the advantages and disadvantages.",
+    "The government should invest more money in public transportation instead of building new roads. To what extent do you agree or disagree?",
+    "Some people say that climate change is the biggest challenge facing the world today. What is your opinion?"
+];
 
-    <div class="output" id="analysis-output" style="display:none;">
-      <div><strong>Your Analysis:</strong></div>
-      <div id="analysis-text"></div>
-      <div class="band-score" id="band-score"></div>
-      <div><strong>Band 9 Model Paraphrase:</strong></div>
-      <div id="model-paraphrase" style="margin-top:8px; font-style: italic; color: var(--header);"></div>
-      <div style="margin-top:15px; font-size:0.9rem; color: var(--header); font-weight: 400;">
-        Advice for Band 9: Use precise vocabulary, maintain meaning without repetition, vary complex sentence structures.
-      </div>
-    </div>
-  </div>
+const band9Models = [
+    `It is contended by some that access to university education should be offered free of charge to every individual. This essay will critically examine the extent of my agreement with this statement.`,
+    `There is a common belief that technological advancements are beneficial to the world. This essay will assess the validity of this perspective.`,
+    `In various countries, it has become mandatory for students to acquire a foreign language during their schooling. This essay evaluates the pros and cons of such a policy.`,
+    `It is proposed that increasing expenditure on public transport infrastructure should take priority over constructing new roads. This essay will discuss the degree to which I concur with this viewpoint.`,
+    `Some argue that climate change constitutes the most significant challenge confronting the contemporary world. I will present my perspective on this issue.`
+];
 
-  <script>
-    const analyzeBtn = document.getElementById('analyze-btn');
-    const userInput = document.getElementById('user-input');
-    const analysisOutput = document.getElementById('analysis-output');
-    const analysisText = document.getElementById('analysis-text');
-    const bandScoreElem = document.getElementById('band-score');
-    const modelParaphrase = document.getElementById('model-paraphrase');
-    const originalText = document.getElementById('original-question').textContent;
+const band9Advice = [
+    `Use precise and advanced vocabulary to rephrase key concepts, maintain the original meaning without repetition, and vary your sentence structures including complex and compound sentences.`,
+    `Employ a range of sophisticated synonyms and maintain natural flow while accurately capturing the author's position. Avoid oversimplification or omission of crucial details.`,
+    `Balance your use of formal vocabulary and complex sentences with clarity. Ensure the paraphrase includes all important elements and uses accurate terminology.`,
+    `Use clear, formal academic language and restructure the sentence to avoid plagiarism, while keeping the meaning intact. Include linking phrases where appropriate.`,
+    `Adopt careful lexical choices related to environmental issues and state your opinion succinctly in formal style. Vary sentence length and complexity.`
+];
 
-    function getPreviousBestScore() {
-      try {
-        const saved = localStorage.getItem('ielts_progress_paraphrase');
-        return saved ? JSON.parse(saved).bestScore || 0 : 0;
-      } catch {
-        return 0;
-      }
-    }
+let currentQuestionIndex = 0;
 
-    function saveProgressLocally(score) {
-      try {
-        const previousBest = getPreviousBestScore();
-        const newBest = Math.max(score, previousBest);
-        const progressData = {
-          completed: score >= 7,
-          bestScore: newBest,
-          lastAttempt: new Date().toISOString()
-        };
-        localStorage.setItem('ielts_progress_paraphrase', JSON.stringify(progressData));
-        console.log('Paraphrase progress saved locally:', progressData);
-      } catch (error) {
-        console.error('Failed to save paraphrase progress:', error);
-      }
-    }
+const questionContainer = document.getElementById('question-container');
+const userInput = document.getElementById('user-input');
+const submitBtn = document.getElementById('submit-btn');
+const nextBtn = document.getElementById('next-btn');
+const results = document.getElementById('results');
+const analysisOutput = document.getElementById('analysis');
+const bandScoreOutput = document.getElementById('band-score');
+const modelAnswerOutput = document.getElementById('model-answer');
+const adviceOutput = document.getElementById('advice');
+const navButtons = document.getElementById('nav-buttons');
 
-    function sendProgressToParent(score) {
-      const progress = {
-        ielts_progress: {
-          id: 'paraphrase',
-          completed: score >= 7.0,
-          bestScore: score,
-          totalXP: Math.round(score * 10) // Example XP scaling (modify as needed)
-        }
-      };
-      if (window.parent && window.parent !== window) {
-        window.parent.postMessage(progress, "*");
-        console.log('Paraphrase progress sent to parent:', progress);
-      }
-    }
+// Display the question
+function displayQuestion(index) {
+    currentQuestionIndex = index;
+    questionContainer.textContent = questions[index];
+    userInput.value = '';
+    results.style.display = 'none';
+    nextBtn.disabled = true;
+    submitBtn.disabled = false;
+    userInput.focus();
+    highlightNavButton(index);
+}
 
-    function analyzeParaphrase() {
-      const userText = userInput.value.trim();
-      if (!userText) {
-        alert('Please enter your paraphrase first.');
-        return;
-      }
-
-      // Dummy text complexity & vocabulary analysis for demonstration
-      const lengthScore = Math.min(userText.split(' ').length / originalText.split(' ').length * 5, 5);
-      const vocabScore = userText.match(/\b(belief|higher|education|provided|learner|access|charge|critically|statement|individual)\b/gi)?.length || 0;
-      // Simple combined score out of 9
-      let bandScore = Math.min((lengthScore + vocabScore) / 2 + 4, 9);
-
-      analysisOutput.style.display = 'block';
-      analysisText.textContent = `Grammar complexity rating: ${(bandScore - 0.5).toFixed(1)} / 9  Vocabulary sophistication rating: ${(bandScore).toFixed(1)} / 9`;
-      bandScoreElem.textContent = `Estimated Band Score: ${bandScore.toFixed(1)}`;
-      modelParaphrase.textContent = "It is contended by some that access to university education should be offered free of charge to every individual. This essay will critically examine the extent of my agreement with this statement.";
-
-      saveProgressLocally(bandScore);
-      sendProgressToParent(bandScore);
-    }
-
-    analyzeBtn.addEventListener('click', analyzeParaphrase);
-
-    document.addEventListener('DOMContentLoaded', () => {
-      // Optionally load saved best score or initialize UI
+// Navigation buttons
+function createNavButtons() {
+    questions.forEach((_, i) => {
+        const btn = document.createElement('button');
+        btn.textContent = `Q${i + 1}`;
+        btn.addEventListener('click', () => displayQuestion(i));
+        navButtons.appendChild(btn);
     });
-  </script>
+}
+
+function highlightNavButton(index) {
+    const buttons = navButtons.querySelectorAll('button');
+    buttons.forEach((btn, i) => {
+        btn.classList.toggle('active', i === index);
+    });
+}
+
+// Simple grammar and vocabulary analysis function (placeholder, to be refined)
+function analyzeInput(text) {
+    if (!text || text.trim().length < 10) {
+        return {
+            grammar: 'Your paraphrase is too short for a meaningful analysis.',
+            vocab: 'Try to use a wider range of advanced vocabulary.',
+            band: 4.0
+        };
+    }
+
+    // Basic checks for complex sentence connectors
+    let grammarScore = 7.0;
+    let vocabScore = 7.0;
+    const complexConnectors = ['although', 'despite', 'however', 'moreover', 'therefore', 'thus', 'consequently'];
+    const usedConnectors = complexConnectors.filter(connector => text.toLowerCase().includes(connector));
+    if (usedConnectors.length < 2) grammarScore -= 1;
+
+    // Vocabulary complexity by word length and diversity
+    const words = text.split(/\s+/);
+    const uniqueWords = new Set(words.map(w => w.toLowerCase()));
+    if (uniqueWords.size < 15) vocabScore -= 1;
+    if (words.some(word => word.length > 12)) vocabScore += 0.5;
+
+    const estimatedBand = Math.min(9.0, Math.max(4.0, (grammarScore + vocabScore) / 2));
+
+    return {
+        grammar: `Grammar complexity rating: ${grammarScore.toFixed(1)} out of 9`,
+        vocab: `Vocabulary sophistication rating: ${vocabScore.toFixed(1)} out of 9`,
+        band: estimatedBand.toFixed(1)
+    };
+}
+
+submitBtn.addEventListener('click', () => {
+    const paraphrase = userInput.value.trim();
+    if (!paraphrase) {
+        alert('Please enter your paraphrase before submitting.');
+        return;
+    }
+
+    const analysis = analyzeInput(paraphrase);
+
+    analysisOutput.textContent = `${analysis.grammar}
+${analysis.vocab}`;
+    bandScoreOutput.textContent = analysis.band;
+    modelAnswerOutput.textContent = band9Models[currentQuestionIndex];
+    adviceOutput.textContent = band9Advice[currentQuestionIndex];
+    results.style.display = 'block';
+    submitBtn.disabled = true;
+    nextBtn.disabled = false;
+});
+
+nextBtn.addEventListener('click', () => {
+    const nextIndex = (currentQuestionIndex + 1) % questions.length;
+    displayQuestion(nextIndex);
+});
+
+// Initialize
+createNavButtons();
+displayQuestion(0);
+</script>
 </body>
 </html>
