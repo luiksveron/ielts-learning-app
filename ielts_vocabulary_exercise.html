@@ -1,603 +1,458 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IELTS Vocabulary Exercise - Addition, Equation & Conclusion</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            padding: 30px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 2.2em;
-        }
-
-        .header p {
-            color: #666;
-            font-size: 1.1em;
-        }
-
-        .instructions {
-            background: #f8f9ff;
-            border-left: 4px solid #667eea;
-            padding: 15px;
-            margin-bottom: 25px;
-            border-radius: 5px;
-        }
-
-        .word-bank {
-            background: #fff5f5;
-            border: 2px dashed #ff6b6b;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 25px;
-            min-height: 100px;
-        }
-
-        .word-bank h3 {
-            margin-top: 0;
-            color: #ff6b6b;
-            text-align: center;
-        }
-
-        .words-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        .word-item {
-            background: #4ecdc4;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 25px;
-            cursor: grab;
-            user-select: none;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .word-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            background: #45b7aa;
-        }
-
-        .word-item.dragging {
-            opacity: 0.5;
-            transform: rotate(5deg);
-        }
-
-        .categories {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .category {
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            min-height: 200px;
-            padding: 15px;
-            background: #fafafa;
-            transition: all 0.3s ease;
-        }
-
-        .category.drag-over {
-            border-color: #4ecdc4;
-            background: #f0fdfc;
-            transform: scale(1.02);
-        }
-
-        .category h3 {
-            text-align: center;
-            margin-top: 0;
-            padding: 10px;
-            border-radius: 8px;
-            color: white;
-            font-size: 1.2em;
-        }
-
-        .category.addition h3 {
-            background: #ff6b6b;
-        }
-
-        .category.equation h3 {
-            background: #4ecdc4;
-        }
-
-        .category.conclusion h3 {
-            background: #45b7aa;
-        }
-
-        .category-items {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            min-height: 150px;
-            padding: 10px;
-            border: 1px dashed #ccc;
-            border-radius: 5px;
-            background: white;
-        }
-
-        .placed-word {
-            background: #95a5a6;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .placed-word:hover {
-            background: #7f8c8d;
-            transform: translateY(-1px);
-        }
-
-        .placed-word.correct {
-            background: #2ecc71;
-            animation: correctPulse 0.5s ease;
-        }
-
-        .placed-word.incorrect {
-            background: #e74c3c;
-            animation: incorrectShake 0.5s ease;
-        }
-
-        @keyframes correctPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes incorrectShake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        .controls {
-            text-align: center;
-            margin-top: 25px;
-        }
-
-        .btn {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1em;
-            margin: 0 10px;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-        }
-
-        .btn:hover {
-            background: #5a6fd8;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .feedback {
-            text-align: center;
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 1.1em;
-        }
-
-        .feedback.show {
-            display: block;
-        }
-
-        .feedback.hide {
-            display: none;
-        }
-
-        .feedback.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .feedback.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .score {
-            text-align: center;
-            font-size: 1.2em;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background: #e0e0e0;
-            border-radius: 5px;
-            margin: 15px 0;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(45deg, #4ecdc4, #44a08d);
-            width: 0%;
-            transition: width 0.3s ease;
-            border-radius: 5px;
-        }
-
-        @media (max-width: 768px) {
-            .categories {
-                grid-template-columns: 1fr;
-            }
-
-            .container {
-                padding: 20px;
-            }
-
-            .header h1 {
-                font-size: 1.8em;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IELTS Vocabulary Exercise - Addition, Equation & Conclusion (with XP)</title>
+  <style>
+    :root {
+      --bg: #f6f5f2;
+      --card: #d6d1c4;
+      --accent-blue: #b8c6db;
+      --accent-peach: #f2e9e1;
+      --primary: #8ca6db;
+      --secondary: #e8a87c;
+      --header: #6d6875;
+      --sand: #e1d7c6;
+      --font-main: 'Quicksand', 'Nunito', Arial, sans-serif;
+    }
+    body {
+      font-family: var(--font-main);
+      background: var(--bg);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      color: #444;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card);
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: 0 2px 20px rgba(109, 104, 117, 0.09);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--header);
+    }
+    .header h1 {
+      font-family: 'Quicksand', cursive, sans-serif;
+      font-size: 2.2rem;
+      margin-bottom: 0.3rem;
+      letter-spacing: 0.02em;
+    }
+    .header p {
+      font-size: 1.15rem;
+      color: var(--header);
+      margin: 0;
+      font-weight: 600;
+    }
+    .score-display, #xp-display {
+      text-align: center;
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin: 0.75rem 0;
+      font-weight: 700;
+    }
+    .word-bank {
+      background: var(--accent-peach);
+      border: 2px dashed var(--primary);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 25px;
+      min-height: 100px;
+      color: var(--header);
+    }
+    .word-bank h3 {
+      margin: 0 0 15px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.25rem;
+    }
+    .words-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .word-item {
+      background: var(--primary);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 24px;
+      cursor: grab;
+      user-select: none;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(140, 166, 219, 0.08);
+    }
+    .word-item:hover {
+      background: var(--secondary);
+      box-shadow: 0 6px 15px rgba(232, 168, 124, 0.18);
+      transform: translateY(-2px);
+    }
+    .word-item.dragging {
+      opacity: 0.5;
+      transform: rotate(5deg);
+    }
+    .word-item.correct {
+      background: #51cf66;
+      border: 2px solid #40c057;
+    }
+    .word-item.incorrect {
+      background: #ff6b6b;
+      border: 2px solid #fa5252;
+    }
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+    .category {
+      background: var(--sand);
+      border: 2px solid var(--card);
+      border-radius: 18px;
+      min-height: 200px;
+      padding: 20px;
+      transition: all 0.3s ease;
+      color: var(--header);
+    }
+    .category.drag-over {
+      border-color: var(--primary);
+      background: #f5f8fb;
+      transform: scale(1.02);
+    }
+    .category h3 {
+      text-align: center;
+      margin: 0 0 15px;
+      padding: 10px;
+      border-radius: 12px;
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+    .category[data-category='addition'] h3 {
+      background: var(--primary);
+    }
+    .category[data-category='equation'] h3 {
+      background: #7ea9dd;
+    }
+    .category[data-category='conclusion'] h3 {
+      background: #e8a87c;
+    }
+    .controls {
+      text-align: center;
+      margin-top: 25px;
+    }
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px 30px;
+      border-radius: 24px;
+      cursor: pointer;
+      font-family: var(--font-main);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 0 12px;
+      box-shadow: 0 4px 12px rgba(140, 166, 219, 0.2);
+      transition: background 0.3s ease;
+    }
+    .btn:hover {
+      background: var(--secondary);
+      color: var(--header);
+      box-shadow: 0 6px 15px rgba(232, 168, 124, 0.25);
+      transform: translateY(-3px);
+    }
+    .btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🎯 IELTS Vocabulary Exercise</h1>
-            <p>Day 1: Addition, Equation & Conclusion</p>
-        </div>
-
-        <div class="instructions">
-            <strong>Instructions:</strong> Drag and drop the words/phrases into the correct categories:<br>
-            • <strong>Addition:</strong> Words that add information<br>
-            • <strong>Equation:</strong> Words that show similarity/comparison<br>
-            • <strong>Conclusion:</strong> Words that conclude or summarize
-        </div>
-
-        <div class="score">
-            <span>Score: <span id="score">0</span>/24</span>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress"></div>
-            </div>
-        </div>
-
-        <div class="word-bank" id="wordBank">
-            <h3>📝 Word Bank - Drag these words to the correct categories</h3>
-            <div class="words-container" id="wordsContainer">
-                <!-- Words will be populated here -->
-            </div>
-        </div>
-
-        <div class="categories">
-            <div class="category addition" data-category="addition">
-                <h3>Addition</h3>
-                <div class="category-items" id="addition-items"></div>
-            </div>
-
-            <div class="category equation" data-category="equation">
-                <h3>Equation</h3>
-                <div class="category-items" id="equation-items"></div>
-            </div>
-
-            <div class="category conclusion" data-category="conclusion">
-                <h3>Conclusion</h3>
-                <div class="category-items" id="conclusion-items"></div>
-            </div>
-        </div>
-
-        <div class="controls">
-            <button class="btn" onclick="checkAnswers()">✓ Check Answers</button>
-            <button class="btn" onclick="resetExercise()">🔄 Reset</button>
-            <button class="btn" onclick="showHint()">💡 Hint</button>
-        </div>
-
-        <div class="feedback hide" id="feedback"></div>
+  <div class="container">
+    <div class="header">
+      <h1>🎯 IELTS Vocabulary Exercise</h1>
+      <p>Day 1: Addition, Equation & Conclusion</p>
+      <div class="score-display" id="score-display">Score: 0 / 24</div>
+      <div id="xp-display">Total XP: 0</div>
     </div>
 
-    <script>
-        // Word definitions and correct answers
-        const wordsData = {
-            'along with': 'addition',
-            'also': 'addition',
-            'and': 'addition',
-            'as well as': 'addition',
-            'besides': 'addition',
-            'furthermore': 'addition',
-            'in addition': 'addition',
-            'moreover': 'addition',
-            'too': 'addition',
-            'what\'s more': 'addition',
-            'correspondingly': 'equation',
-            'equally': 'equation',
-            'in the same way': 'equation',
-            'likewise': 'equation',
-            'similarly': 'equation',
-            'in brief': 'conclusion',
-            'in conclusion': 'conclusion',
-            'thus': 'conclusion',
-            'therefore': 'conclusion',
-            'to conclude': 'conclusion',
-            'to summarise': 'conclusion',
-            'to sum up': 'conclusion',
-            'briefly': 'conclusion',
-            'we can conclude that': 'conclusion'
+    <div class="word-bank">
+      <h3>📝 Word Bank - Drag these words to the correct categories</h3>
+      <div class="words-container" id="word-bank"></div>
+    </div>
+
+    <div class="categories">
+      <div class="category" data-category="addition">
+        <h3>Addition</h3>
+        <div class="words-container"></div>
+      </div>
+      <div class="category" data-category="equation">
+        <h3>Equation</h3>
+        <div class="words-container"></div>
+      </div>
+      <div class="category" data-category="conclusion">
+        <h3>Conclusion</h3>
+        <div class="words-container"></div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="check-answers-btn">Check Answers</button>
+      <button class="btn" id="reset-btn">Reset Exercise</button>
+    </div>
+  </div>
+
+  <script>
+    let score = 0;
+    const maxScore = 24;
+
+    const correctAnswers = {
+      'addition': ['as well as', 'in addition', 'and', 'too', 'moreover', 'besides', 'also', "what's more", 'furthermore', 'along with'],
+      'equation': ['likewise', 'similarly', 'in the same way', 'equally', 'correspondingly'],
+      'conclusion': ['thus', 'briefly', 'to sum up', 'therefore', 'to summarise', 'in conclusion', 'in brief', 'we can conclude that', 'to conclude']
+    };
+
+    const vocabularyWords = [
+      'as well as', 'thus', 'briefly', 'to sum up', 'therefore', 'in addition',
+      'likewise', 'to summarise', 'and', 'too', 'similarly', 'moreover',
+      'in conclusion', 'besides', 'also', 'in the same way', 'in brief',
+      "what's more", 'furthermore', 'we can conclude that', 'equally',
+      'along with', 'to conclude', 'correspondingly'
+    ];
+
+    function initializeExercise() {
+      populateWordBank();
+      setupDragAndDrop();
+      loadPreviousProgress();
+      updateXPDisplay(getTotalXP());
+      updateScoreDisplay();
+    }
+
+    function populateWordBank() {
+      const wordBank = document.getElementById('word-bank');
+      wordBank.innerHTML = '';
+      vocabularyWords.forEach(word => {
+        const wordElement = createWordElement(word);
+        wordBank.appendChild(wordElement);
+      });
+    }
+
+    function createWordElement(word) {
+      const wordDiv = document.createElement('div');
+      wordDiv.className = 'word-item';
+      wordDiv.textContent = word;
+      wordDiv.draggable = true;
+      wordDiv.addEventListener('dragstart', handleDragStart);
+      wordDiv.addEventListener('dragend', handleDragEnd);
+      return wordDiv;
+    }
+
+    function setupDragAndDrop() {
+      const categories = document.querySelectorAll('.category');
+      categories.forEach(category => {
+        category.addEventListener('dragover', handleDragOver);
+        category.addEventListener('drop', handleDrop);
+        category.addEventListener('dragenter', handleDragEnter);
+        category.addEventListener('dragleave', handleDragLeave);
+      });
+      const wordBank = document.getElementById('word-bank');
+      wordBank.addEventListener('dragover', handleDragOver);
+      wordBank.addEventListener('drop', handleDrop);
+    }
+
+    let draggedElement = null;
+
+    function handleDragStart(e) {
+      draggedElement = e.target;
+      e.target.classList.add('dragging');
+    }
+
+    function handleDragEnd(e) {
+      e.target.classList.remove('dragging');
+      draggedElement = null;
+    }
+
+    function handleDragOver(e) {
+      e.preventDefault();
+    }
+
+    function handleDragEnter(e) {
+      if (e.target.classList.contains('category')) {
+        e.target.classList.add('drag-over');
+      }
+    }
+
+    function handleDragLeave(e) {
+      if (e.target.classList.contains('category')) {
+        e.target.classList.remove('drag-over');
+      }
+    }
+
+    function handleDrop(e) {
+      e.preventDefault();
+      if (!draggedElement) return;
+
+      let dropTarget = e.target;
+
+      if (dropTarget.classList.contains('category')) {
+        dropTarget = dropTarget.querySelector('.words-container');
+      } else if (dropTarget.id === 'word-bank') {
+        dropTarget = dropTarget;
+      } else if (dropTarget.classList.contains('words-container')) {
+        dropTarget = dropTarget;
+      } else {
+        return;
+      }
+
+      if (draggedElement.parentNode) {
+        draggedElement.parentNode.removeChild(draggedElement);
+      }
+
+      dropTarget.appendChild(draggedElement);
+
+      document.querySelectorAll('.category').forEach(cat => cat.classList.remove('drag-over'));
+
+      draggedElement.classList.remove('correct', 'incorrect');
+    }
+
+    function calculateXP(score, maxScore) {
+      const baseXP = 100;
+      const alpha = 1.5;
+      return Math.round(baseXP * Math.pow(score / maxScore, alpha));
+    }
+
+    function checkAnswers() {
+      score = 0;
+
+      document.querySelectorAll('.word-item').forEach(word => {
+        word.classList.remove('correct', 'incorrect');
+      });
+
+      Object.keys(correctAnswers).forEach(category => {
+        const categoryElement = document.querySelector(`.category[data-category="${category}"] .words-container`);
+        const wordsInCategory = Array.from(categoryElement.children);
+
+        wordsInCategory.forEach(wordElement => {
+          const wordText = wordElement.textContent.trim().toLowerCase();
+          const correctWords = correctAnswers[category].map(w => w.toLowerCase());
+          if (correctWords.includes(wordText)) {
+            score++;
+            wordElement.classList.add('correct');
+          } else {
+            wordElement.classList.add('incorrect');
+          }
+        });
+      });
+
+      updateScoreAndProgress();
+    }
+
+    function updateScoreDisplay() {
+      const scoreDisplay = document.getElementById('score-display');
+      scoreDisplay.textContent = `Score: ${score} / ${maxScore}`;
+    }
+
+    function getTotalXP() {
+      try {
+        const saved = localStorage.getItem('ielts_total_xp');
+        return saved ? parseInt(saved, 10) : 0;
+      } catch {
+        return 0;
+      }
+    }
+
+    function updateXP(newXP) {
+      const savedXP = getTotalXP();
+      const totalXP = savedXP + newXP;
+      localStorage.setItem('ielts_total_xp', totalXP);
+      updateXPDisplay(totalXP);
+      sendProgressToParentWithXP(totalXP);
+    }
+
+    function updateXPDisplay(totalXP) {
+      const xpDisplay = document.getElementById('xp-display');
+      if (xpDisplay) {
+        xpDisplay.textContent = `Total XP: ${totalXP}`;
+      }
+    }
+
+    function sendProgressToParentWithXP(totalXP) {
+      const progress = {
+        ielts_progress: {
+          id: 'vocab',
+          completed: score === maxScore,
+          bestScore: score,
+          totalXP: totalXP
+        }
+      };
+
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage(progress, '*');
+        console.log('Progress sent to parent with XP:', progress);
+      }
+    }
+
+    function saveProgressLocally() {
+      try {
+        const previousBest = getBestScore();
+        const newBest = Math.max(score, previousBest);
+
+        const progressData = {
+          completed: score === maxScore,
+          bestScore: newBest,
+          lastAttempt: new Date().toISOString()
         };
 
-        let score = 0;
-        let currentAnswers = {};
+        localStorage.setItem('ielts_progress_vocab', JSON.stringify(progressData));
+        console.log('Progress saved locally:', progressData);
+      } catch (error) {
+        console.error('Failed to save progress:', error);
+      }
+    }
 
-        // Initialize the exercise
-        function initializeExercise() {
-            const wordsContainer = document.getElementById('wordsContainer');
-            wordsContainer.innerHTML = '';
+    function getBestScore() {
+      try {
+        const saved = localStorage.getItem('ielts_progress_vocab');
+        return saved ? JSON.parse(saved).bestScore || 0 : 0;
+      } catch {
+        return 0;
+      }
+    }
 
-            // Shuffle words for variety
-            const words = Object.keys(wordsData);
-            const shuffledWords = words.sort(() => Math.random() - 0.5);
+    function updateScoreAndProgress() {
+      updateScoreDisplay();
+      const xpGained = calculateXP(score, maxScore);
+      updateXP(xpGained);
+      saveProgressLocally();
+    }
 
-            shuffledWords.forEach(word => {
-                const wordElement = document.createElement('div');
-                wordElement.className = 'word-item';
-                wordElement.draggable = true;
-                wordElement.textContent = word;
-                wordElement.dataset.word = word;
+    function resetExercise() {
+      score = 0;
+      updateScoreDisplay();
+      updateXPDisplay(getTotalXP());
+      document.querySelectorAll('.word-item').forEach(word => {
+        word.classList.remove('correct', 'incorrect');
+      });
+      const wordBank = document.getElementById('word-bank');
+      document.querySelectorAll('.word-item').forEach(word => {
+        wordBank.appendChild(word);
+      });
+    }
 
-                // Drag event listeners
-                wordElement.addEventListener('dragstart', handleDragStart);
-                wordElement.addEventListener('dragend', handleDragEnd);
-
-                wordsContainer.appendChild(wordElement);
-            });
-
-            // Reset categories
-            ['addition', 'equation', 'conclusion'].forEach(category => {
-                document.getElementById(category + '-items').innerHTML = '';
-            });
-
-            // Reset score and feedback
-            score = 0;
-            updateScore();
-            currentAnswers = {};
-            document.getElementById('feedback').className = 'feedback hide';
-        }
-
-        // Drag and drop handlers
-        function handleDragStart(e) {
-            e.dataTransfer.setData('text/plain', e.target.dataset.word);
-            e.target.classList.add('dragging');
-        }
-
-        function handleDragEnd(e) {
-            e.target.classList.remove('dragging');
-        }
-
-        // Set up drop zones
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeExercise();
-
-            // Add drop event listeners to categories
-            const categories = document.querySelectorAll('.category-items');
-            categories.forEach(category => {
-                category.addEventListener('dragover', handleDragOver);
-                category.addEventListener('drop', handleDrop);
-                category.addEventListener('dragenter', handleDragEnter);
-                category.addEventListener('dragleave', handleDragLeave);
-            });
-        });
-
-        function handleDragOver(e) {
-            e.preventDefault();
-        }
-
-        function handleDragEnter(e) {
-            e.preventDefault();
-            e.target.closest('.category').classList.add('drag-over');
-        }
-
-        function handleDragLeave(e) {
-            if (!e.target.closest('.category').contains(e.relatedTarget)) {
-                e.target.closest('.category').classList.remove('drag-over');
-            }
-        }
-
-        function handleDrop(e) {
-            e.preventDefault();
-            const word = e.dataTransfer.getData('text/plain');
-            const category = e.target.closest('.category').dataset.category;
-
-            // Remove drag-over effect
-            e.target.closest('.category').classList.remove('drag-over');
-
-            // Find and remove the word from its current location
-            const wordElement = document.querySelector(`[data-word="${word}"]`);
-            if (wordElement) {
-                wordElement.remove();
-            }
-
-            // Remove word from previous category if it was already placed
-            Object.keys(currentAnswers).forEach(cat => {
-                if (currentAnswers[cat] && currentAnswers[cat].includes(word)) {
-                    currentAnswers[cat] = currentAnswers[cat].filter(w => w !== word);
-                }
-            });
-
-            // Add word to new category
-            if (!currentAnswers[category]) {
-                currentAnswers[category] = [];
-            }
-            currentAnswers[category].push(word);
-
-            // Create placed word element
-            const placedWord = document.createElement('div');
-            placedWord.className = 'placed-word';
-            placedWord.textContent = word;
-            placedWord.dataset.word = word;
-            placedWord.onclick = () => returnWordToBank(word);
-
-            e.target.appendChild(placedWord);
-
-            updateScore();
-        }
-
-        function returnWordToBank(word) {
-            // Remove from categories
-            Object.keys(currentAnswers).forEach(cat => {
-                if (currentAnswers[cat] && currentAnswers[cat].includes(word)) {
-                    currentAnswers[cat] = currentAnswers[cat].filter(w => w !== word);
-                }
-            });
-
-            // Remove from DOM
-            const placedElements = document.querySelectorAll(`[data-word="${word}"]`);
-            placedElements.forEach(el => {
-                if (el.classList.contains('placed-word')) {
-                    el.remove();
-                }
-            });
-
-            // Add back to word bank
-            const wordElement = document.createElement('div');
-            wordElement.className = 'word-item';
-            wordElement.draggable = true;
-            wordElement.textContent = word;
-            wordElement.dataset.word = word;
-            wordElement.addEventListener('dragstart', handleDragStart);
-            wordElement.addEventListener('dragend', handleDragEnd);
-
-            document.getElementById('wordsContainer').appendChild(wordElement);
-
-            updateScore();
-        }
-
-        function updateScore() {
-            let correct = 0;
-            const totalWords = Object.keys(wordsData).length;
-
-            Object.keys(currentAnswers).forEach(category => {
-                if (currentAnswers[category]) {
-                    currentAnswers[category].forEach(word => {
-                        if (wordsData[word] === category) {
-                            correct++;
-                        }
-                    });
-                }
-            });
-
-            score = correct;
-            document.getElementById('score').textContent = score;
-
-            const progressPercent = (score / totalWords) * 100;
-            document.getElementById('progress').style.width = progressPercent + '%';
-        }
-
-        function checkAnswers() {
-            let feedback = '';
-            let allCorrect = true;
-
-            // Clear previous styling
-            document.querySelectorAll('.placed-word').forEach(word => {
-                word.classList.remove('correct', 'incorrect');
-            });
-
-            Object.keys(currentAnswers).forEach(category => {
-                if (currentAnswers[category]) {
-                    currentAnswers[category].forEach(word => {
-                        const wordElement = document.querySelector(`#${category}-items [data-word="${word}"]`);
-                        if (wordsData[word] === category) {
-                            wordElement.classList.add('correct');
-                        } else {
-                            wordElement.classList.add('incorrect');
-                            allCorrect = false;
-                        }
-                    });
-                }
-            });
-
-            const totalWords = Object.keys(wordsData).length;
-            const placedWords = Object.values(currentAnswers).flat().length;
-
-            if (placedWords === 0) {
-                feedback = 'Please place some words in the categories first!';
-                showFeedback(feedback, 'error');
-            } else if (allCorrect && score === totalWords) {
-                feedback = `🎉 Excellent! Perfect score ${score}/${totalWords}! You've mastered IELTS linking words for Addition, Equation, and Conclusion. This vocabulary will significantly boost your Writing Task 2 coherence and cohesion scores!`;
-                showFeedback(feedback, 'success');
-            } else if (score >= totalWords * 0.8) {
-                feedback = `👍 Great work! Score: ${score}/${totalWords}. You have a strong understanding of IELTS linking vocabulary. Review the incorrect ones and you'll be ready for Band 7.5+!`;
-                showFeedback(feedback, 'success');
-            } else {
-                feedback = `📚 Keep practicing! Score: ${score}/${totalWords}. Focus on understanding the function of each linking word. Remember: Addition words add information, Equation words show similarity, Conclusion words summarize or conclude.`;
-                showFeedback(feedback, 'error');
-            }
-        }
-
-        function showFeedback(message, type) {
-            const feedbackElement = document.getElementById('feedback');
-            feedbackElement.textContent = message;
-            feedbackElement.className = `feedback show ${type}`;
-
-            // Hide feedback after 10 seconds
-            setTimeout(() => {
-                feedbackElement.className = 'feedback hide';
-            }, 10000);
-        }
-
-        function resetExercise() {
-            initializeExercise();
-            showFeedback('Exercise reset! Try again to improve your score.', 'error');
-        }
-
-        function showHint() {
-            const hints = [
-                "💡 Addition words (like 'furthermore', 'moreover') add extra information to support your point.",
-                "💡 Equation words (like 'similarly', 'likewise') compare things or show they are the same.",
-                "💡 Conclusion words (like 'therefore', 'in conclusion') wrap up your argument or paragraph.",
-                "💡 'Thus' and 'therefore' indicate a logical conclusion from previous statements.",
-                "💡 'Correspondingly' and 'equally' show that two things are similar or balanced."
-            ];
-
-            const randomHint = hints[Math.floor(Math.random() * hints.length)];
-            showFeedback(randomHint, 'success');
-        }
-    </script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeExercise();
+      document.getElementById('check-answers-btn').addEventListener('click', checkAnswers);
+      document.getElementById('reset-btn').addEventListener('click', resetExercise);
+    });
+  </script>
 </body>
 </html>
